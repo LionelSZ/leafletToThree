@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>My first three.js app</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../packages/three/build/three.module.js",
+        "three/addons/": "../../packages/three/examples/jsm/"
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="../../packages/leaflet/leaflet.css">
+  <script src="../../packages/leaflet/leaflet.js"></script>
+
+</head>
+
+<body>
+  <div id="map"></div>
+  <!-- <canvas id="threejs-canvas"></canvas> -->
+</body>
+<!-- <script type="module" src="./main.js"></script> -->
+<script src="../../utils/index.js"></script>
+<script src="../../utils/leaflet/index.js"></script>
+<script type="module" src="../../js/three_into_leaflet.js"></script>
+
+</html>

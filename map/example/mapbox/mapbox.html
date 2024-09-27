@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Guides</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script>
+    // TO MAKE THE MAP APPEAR YOU MUST
+    // ADD YOUR ACCESS TOKEN FROM
+    // https://account.mapbox.com
+    let style = {
+      "version": 8,
+      "sources": {
+        "openstreetmap": {
+          "type": "raster",
+          "tiles": [
+            "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", // 使用 OpenStreetMap 瓦片
+            "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          ],
+          "tileSize": 256
+        }
+      },
+      "layers": [
+        {
+          "id": "osm-tiles",
+          "type": "raster",
+          "source": "openstreetmap"
+        }
+      ]
+    }
+
+    var tdtVec = {
+      //类型为栅格瓦片
+      "type": "raster",
+      'tiles': [
+        //请求地址
+        // "http://t0.tianditu.com/img_w/wmts?service=WMTS&version=1.0.0&request=GetTile&layer=img&style=default&format=tiles&TileMatrixSet=w&TileMatrix={z}&TileRow={y}&TileCol={x}&tk=e2c25bbe2d3d0e250c801b840394d71a"
+        "http://t0.tianditu.com/vec_w/wmts?service=WMTS&version=1.0.0&request=GetTile&layer=img&style=default&format=tiles&TileMatrixSet=w&TileMatrix={z}&TileRow={y}&TileCol={x}&tk=e2c25bbe2d3d0e250c801b840394d71a"
+      ],
+      //分辨率
+      'tileSize': 256
+    };
+
+    var tdtCva = {
+      "type": "raster",
+      'tiles': [
+        "http://t0.tianditu.com/cva_w/wmts?&service=WMTS&version=1.0.0&request=GetTile&layer=cva&style=default&format=tiles&TileMatrixSet=w&TileMatrix={z}&TileRow={y}&TileCol={x}&tk=e2c25bbe2d3d0e250c801b840394d71a"
+      ],
+      'tileSize': 256
+    };
+    style = {
+      //设置版本号，一定要设置
+      "version": 8,
+      //添加来源
+      "sources": {
+        "tdtVec": tdtVec,
+        "tdtCva": tdtCva
+      },
+      layers: [
+        {
+          //图层id，要保证唯一性
+          "id": "tdtVec",
+          //图层类型
+          "type": "raster",
+          //数据源
+          "source": "tdtVec",
+          //图层最小缩放级数
+          "minzoom": 0,
+          //图层最大缩放级数
+          "maxzoom": 21
+        },
+        {
+          "id": "tdtCva",
+          "type": "raster",
+          "source": "tdtCva",
+          "minzoom": 0,
+          "maxzoom": 21
+        }
+
+      ]
+    }
+
+    mapboxgl.accessToken = '_';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      // style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+      style: style,
+      // projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+      projection: 'mercator', // Display the map as a globe, since satellite-v9 defaults to Mercator
+      zoom: 1,
+      center: [30, 15]
+    });
+
+  </script>
+
+
+  <!-- <body>
+  <input type="text" name="" value="禀老君得最慷九，九韩了会到二，斯张子读败重君了这望磊是韩冷回将子，为土褒司的系脱说韩者台乌当不三时。" id="input">
+</body>
+<script>
+  const input = document.getElementById('input');
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' || e.key === 'Enter') {
+      // input.focus()
+      input.select();
+    }
+  });
+</script> -->
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaflet</title>
+  <link rel="stylesheet" href="../../packages/leaflet/leaflet.css">
+  <script src="../../packages/leaflet/leaflet.js"></script>
+  <style>
+    #map {
+      height: 100vh;
+      width: 100vw;
+      background: #F3f3f3;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+</body>
+<script src="../../utils/leaflet/index.js"></script>
+<script>
+  // initialize the map on the "map" div with a given center and zoom
+  let map = L.map('map', {
+    center: [31.230001, 121.474000],
+    layers: [
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+      })
+    ],
+    zoom: 10
+  });
+  createMarker([31.230001, 121.474000]);
+  createPolyline([
+    [31.239605, 121.253256],
+    [31.246063, 121.516913],
+    [31.136228, 121.424908],
+    [31.239605, 121.253256],
+  ])
+
+  fetch('https://geo.datav.aliyun.com/areas_v3/bound/310000.json').then(async res => {
+    const shData = await res.json().then(res => res)
+    const shDataReverse = shData.features.map(item => {
+      return {
+        ...item,
+        geometry: {
+          ...item.geometry,
+          coordinates: item.geometry.coordinates.map(iItem => {
+            return iItem.map(iiItem => {
+              return iiItem.map(iiiItem => {
+                return iiiItem.reverse()
+              })
+            })
+          })
+        },
+        properties: {
+          ...item.properties,
+          center: item.properties.center.reverse(),
+          centroid: item.properties.centroid.reverse()
+        }
+      }
+    })
+    const polyData = shDataReverse[0].geometry.coordinates
+    createPolygon(polyData)
+  });
+
+  createCircle([31.230001, 121.474000], 10000)
+  // createRectangle([
+  //   [31.239605, 121.253256],
+  //   [31.246063, 121.516913],
+  //   [31.136228, 121.424908],
+  //   [31.239605, 121.253256],
+  // ])
+
+  // createGeoJSON()
+</script>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaflet</title>
+  <link rel="stylesheet" href="../../packages/leaflet/leaflet.css">
+  <script src="../../packages/leaflet/leaflet.js"></script>
+  <style>
+    #map {
+      height: 100vh;
+      width: 100vw;
+      background: #F3f3f3;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+</body>
+<script src="../../utils/leaflet/index.js"></script>
+<script src="../../utils/index.js"></script>
+<script>
+  const baseLayer = layerInfos[0]
+  let latlng = latLngFromTileZXY(baseLayer)
+  let map = L.map('map');
+  const zoom = (baseLayer.minZoom + baseLayer.maxZoom) / 2
+  map.setView(latlng, zoom);
+  L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png").addTo(map);
+  L.tileLayer(baseLayer.url,
+    {
+      minZoom: baseLayer.minZoom,
+      maxZoom: baseLayer.maxZoom,
+      attribution: baseLayer.attribution
+    }).addTo(map);
+  console.log(latlng);
+
+  createMarker(latlng);
+</script>
+
+</html>
